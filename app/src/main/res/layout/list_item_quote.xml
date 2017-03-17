@@ -5,8 +5,8 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin" >
 
     <TextView
         android:id="@+id/symbol"
@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
+        android:contentDescription="@string/cd_stock_symbol"
         tools:text="GOOG" />
 
     <LinearLayout
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10sp"
+            android:contentDescription="@string/cd_value_of_stock"
             tools:text="1000.00" />
 
         <TextView
@@ -36,8 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/percent_change_pill_green"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:contentDescription="@string/cd_change_in_value"
             tools:text="100%" />
     </LinearLayout>
 </LinearLayout>

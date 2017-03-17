@@ -3,22 +3,22 @@
 
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
 
-    <string name="pref_stocks_key">stocks</string>
+    <string translatable="false" name="pref_stocks_key">stocks</string>
 
 
-    <string name="pref_display_mode_key">displayMode</string>
-    <string name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
+    <string translatable="false" name="pref_display_mode_key">displayMode</string>
+    <string translatable="false" name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
 
-    <string name="pref_display_mode_absolute_key">absolute</string>
-    <string name="pref_display_mode_percentage_key">percentage</string>
+    <string translatable="false" name="pref_display_mode_absolute_key">absolute</string>
+    <string translatable="false" name="pref_display_mode_percentage_key">percentage</string>
 
-    <string name="default_stocks_yahoo">YHOO</string>
-    <string name="default_stocks_apple">AAPL</string>
-    <string name="default_stocks_microsoft">MSFT</string>
-    <string name="default_stocks_facebook">FB</string>
+    <string translatable="false" name="default_stocks_yahoo">YHOO</string>
+    <string translatable="false" name="default_stocks_apple">AAPL</string>
+    <string translatable="false" name="default_stocks_microsoft">MSFT</string>
+    <string translatable="false" name="default_stocks_facebook">FB</string>
 
 
-    <string name="action_change_units">@string/pref_display_mode_key</string>
+    <string translatable="false" name="action_change_units">@string/pref_display_mode_key</string>
 
 
     <string name="dialog_title">Add Stock</string>
@@ -33,4 +33,12 @@
     <string name="toast_no_connectivity">Will refresh when network available.</string>
 
     <string name="stock_intent_key">STOCK_SYMBOL</string>
+
+    <string name="cd_linechart">Line chart displaying stock value over time</string>
+    <string name="cd_add_new_stock_fab">Add new stock button</string>
+    <string name="cd_error_message">Error message for when list could not be loaded</string>
+    <string name="cd_change_in_value">Change in value of the stock</string>
+    <string name="cd_value_of_stock">Current value of the stock</string>
+    <string name="cd_stock_symbol">Stock symbol of the selected stock</string>
+
 </resources>

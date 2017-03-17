@@ -10,11 +10,15 @@ import android.util.LongSparseArray;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.data.HourAxisValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -64,20 +69,32 @@ public class DetailActivity extends AppCompatActivity {
 
                 String[] values = historicalData.split("\n");
 
-                int k = 0;
-                for (String value: values) {
-                    long timestamp = Long.parseLong(value.split(",")[0]);
-                    float price = Float.parseFloat(value.split(",")[1].trim());
-                    String formattedDate = sdf.format(new Date(timestamp));
+                long referenceTimestamp = Long.parseLong(values[29].split(",")[0]);
 
-                    entries.add(new Entry(k, price));
-                    k++;
+                //int k = 0;
+                for (int i = values.length < 10 ? values.length : 10; i >= 0; i--) {
+                    long timestamp = Long.parseLong(values[i].split(",")[0]);
+                    float price = Float.parseFloat(values[i].split(",")[1].trim());
+
+                    long diffTimestamp = timestamp - referenceTimestamp;
+                    Timber.d(""+diffTimestamp);
+
+                    //String formattedDate = sdf.format(new Date(timestamp));
+
+                    entries.add(new Entry(diffTimestamp, price));
+                    //k++;
 
                     hValues.put(timestamp, price);
                 }
 
+                IAxisValueFormatter xAxisformatter = new HourAxisValueFormatter(referenceTimestamp);
+                XAxis xAxis = mLineChart.getXAxis();
+                xAxis.setValueFormatter(xAxisformatter);
+                xAxis.setLabelRotationAngle(0.5f);
+
                 LineDataSet dataSet = new LineDataSet(entries, "Label");
                 dataSet.setColor(R.color.colorAccent);
+
                 dataSet.setValueTextColor(R.color.colorPrimary);
                 LineData lineData = new LineData(dataSet);
                 mLineChart.setData(lineData);
