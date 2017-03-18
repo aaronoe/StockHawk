@@ -2,10 +2,16 @@ package com.udacity.stockhawk.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -29,14 +35,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-import static com.udacity.stockhawk.R.id.change;
+import static com.udacity.stockhawk.R.id.chart;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    @BindView(R.id.chart) LineChart mLineChart;
+    @BindView(chart) LineChart mLineChart;
     @BindView(R.id.symbol) TextView symbol;
     @BindView(R.id.price) TextView price;
-    @BindView(change) TextView changeTextView;
+    @BindView(R.id.change) TextView changeTextView;
+    @BindView(R.id.chart_selection_spinner) Spinner spinner;
 
     String historicalData;
     String stockSymbol;
@@ -50,6 +57,13 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
+
+        spinner.setOnItemSelectedListener(this);
+        String[] categories = getResources().getStringArray(R.array.graph_choices);
+        ArrayAdapter<String> dataAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
 
         dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
         dollarFormatWithPlus = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
@@ -67,7 +81,7 @@ public class DetailActivity extends AppCompatActivity {
         if (intentThatStartedActivity.hasExtra(getString(R.string.stock_intent_key))) {
             stockSymbol = intentThatStartedActivity.getStringExtra(getString(R.string.stock_intent_key));
             populateViews();
-            extractData(stockSymbol, 40);
+            //extractData(stockSymbol, 1000);
         }
     }
 
@@ -108,10 +122,17 @@ public class DetailActivity extends AppCompatActivity {
 
     public void extractData(String symbol, int numberOfWeeks) {
 
-        List<Entry> entries = new ArrayList<Entry>();
-
+        List<Entry> entries = new ArrayList<>();
 
         String[] values = historicalData.split("\n");
+        int valuesLength = values.length;
+
+        if (numberOfWeeks > valuesLength) {
+            Toast.makeText(this,
+                    getString(R.string.error_less_data_available, valuesLength),
+                    Toast.LENGTH_SHORT).show();
+            numberOfWeeks = valuesLength - 1;
+        }
 
         long referenceTimestamp = Long.parseLong(values[numberOfWeeks].split(",")[0]);
 
@@ -127,25 +148,31 @@ public class DetailActivity extends AppCompatActivity {
             entries.add(new Entry(diffTimestamp, price));
         }
 
-        IAxisValueFormatter xAxisformatter = new HourAxisValueFormatter(referenceTimestamp);
+        IAxisValueFormatter xAxisFormatter = new HourAxisValueFormatter(referenceTimestamp);
         XAxis xAxis = mLineChart.getXAxis();
-        xAxis.setValueFormatter(xAxisformatter);
+        xAxis.setValueFormatter(xAxisFormatter);
 
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(12);
 
-        xAxis.setLabelRotationAngle(45);
+        xAxis.setLabelRotationAngle(60);
         LineDataSet dataSet = new LineDataSet(entries, "Last 5 weeks for: " + symbol);
-        dataSet.setColor(R.color.colorAccent);
+        dataSet.setColor(Color.GRAY);
+        dataSet.setDrawValues(false);
 
-        dataSet.setValueTextColor(R.color.colorPrimary);
+        mLineChart.getXAxis().setTextColor(Color.GRAY);
+        mLineChart.getAxisLeft().setTextColor(Color.GRAY);
+        mLineChart.getAxisRight().setTextColor(Color.GRAY);
+        mLineChart.getLegend().setTextColor(Color.GRAY);
+
+
         LineData lineData = new LineData(dataSet);
         mLineChart.setData(lineData);
         mLineChart.setExtraBottomOffset(5);
 
         MyMarkerView myMarkerView= new MyMarkerView(getApplicationContext(),
-                R.layout.custom_marker_view);
+                R.layout.custom_marker_view, referenceTimestamp, mLineChart.getWidth(), mLineChart.getHeight());
         mLineChart.setMarker(myMarkerView);
 
         mLineChart.setDescription(null);
@@ -153,4 +180,28 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String item = parent.getItemAtPosition(position).toString();
+
+        mLineChart.clear();
+
+        if (item.equals(getString(R.string.choice_one_month))) {
+            extractData(stockSymbol, 4);
+        } else if (item.equals(getString(R.string.choice_three_months))) {
+            extractData(stockSymbol, 12);
+        } else if (item.equals(getString(R.string.choice_six_months))) {
+            extractData(stockSymbol, 24);
+        } else if (item.equals(getString(R.string.choice_one_year))) {
+            extractData(stockSymbol, 48);
+        } else if (item.equals(getString(R.string.choice_two_years))) {
+            extractData(stockSymbol, 96);
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

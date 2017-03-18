@@ -40,5 +40,14 @@
     <string name="cd_change_in_value">Change in value of the stock</string>
     <string name="cd_value_of_stock">Current value of the stock</string>
     <string name="cd_stock_symbol">Stock symbol of the selected stock</string>
+    <string name="cd_select_data_period">Select data period to be shown</string>
+
+    <string name="error_less_data_available">There is only data for %d weeks available</string>
+
+    <string name="choice_one_month">1 Month</string>
+    <string name="choice_three_months">3 Months</string>
+    <string name="choice_six_months">6 Months</string>
+    <string name="choice_one_year">1 Year</string>
+    <string name="choice_two_years">2 Years</string>
 
 </resources>
