@@ -6,4 +6,12 @@
         <item>@string/default_stocks_microsoft</item>
         <item>@string/default_stocks_facebook</item>
     </string-array>
+
+    <string-array name="graph_choices">
+        <item>@string/choice_one_month</item>
+        <item>@string/choice_three_months</item>
+        <item>@string/choice_six_months</item>
+        <item>@string/choice_one_year</item>
+        <item>@string/choice_two_years</item>
+    </string-array>
 </resources>

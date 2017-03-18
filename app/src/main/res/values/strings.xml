@@ -3,22 +3,23 @@
 
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
 
-    <string name="pref_stocks_key">stocks</string>
+    <string translatable="false" name="pref_stocks_key">stocks</string>
 
 
-    <string name="pref_display_mode_key">displayMode</string>
-    <string name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
+    <string translatable="false" name="pref_display_mode_key">displayMode</string>
+    <string translatable="false" name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
 
-    <string name="pref_display_mode_absolute_key">absolute</string>
-    <string name="pref_display_mode_percentage_key">percentage</string>
+    <string translatable="false" name="pref_display_mode_absolute_key">absolute</string>
+    <string translatable="false" name="pref_display_mode_percentage_key">percentage</string>
 
-    <string name="default_stocks_yahoo">YHOO</string>
-    <string name="default_stocks_apple">AAPL</string>
-    <string name="default_stocks_microsoft">MSFT</string>
-    <string name="default_stocks_facebook">FB</string>
+    <string translatable="false" name="default_stocks_yahoo">YHOO</string>
+    <string translatable="false" name="default_stocks_apple">AAPL</string>
+    <string translatable="false" name="default_stocks_microsoft">MSFT</string>
+    <string translatable="false" name="default_stocks_facebook">FB</string>
 
 
-    <string name="action_change_units">@string/pref_display_mode_key</string>
+    <string translatable="false" name="action_change_units">@string/pref_display_mode_key</string>
+    <string translatable="false" name="stock_intent_key">STOCK_SYMBOL</string>
 
 
     <string name="dialog_title">Add Stock</string>
@@ -31,5 +32,28 @@
 
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
+
+    <string name="stock_hawk_logo">Stock Hawk Logo</string>
+
+    <string name="widget_title">Stock Hawk</string>
+
+    <string name="cd_linechart">Line chart displaying stock value over time</string>
+    <string name="cd_add_new_stock_fab">Add new stock button</string>
+    <string name="cd_error_message">Error message for when list could not be loaded</string>
+    <string name="cd_change_in_value">Change in value of the stock</string>
+    <string name="cd_value_of_stock">Current value of the stock</string>
+    <string name="cd_stock_symbol">Stock symbol of the selected stock</string>
+    <string name="cd_select_data_period">Select data period to be shown</string>
+
+    <string name="error_less_data_available">There is only data for %d weeks available</string>
+
+    <string name="choice_one_month">1 Month</string>
+    <string name="choice_three_months">3 Months</string>
+    <string name="choice_six_months">6 Months</string>
+    <string name="choice_one_year">1 Year</string>
+    <string name="choice_two_years">2 Years</string>
+
+    <string name="error_historic_data">Historic data for %s could not be retrieved</string>
+    <string name="error_na_data">Data for %s does not exist</string>
 
 </resources>
