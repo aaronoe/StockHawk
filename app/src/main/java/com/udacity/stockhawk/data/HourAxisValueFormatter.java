@@ -22,7 +22,7 @@ public class HourAxisValueFormatter implements IAxisValueFormatter {
 
     public HourAxisValueFormatter(long referenceTimestamp) {
         this.referenceTimestamp = referenceTimestamp;
-        this.mDataFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        this.mDataFormat = new SimpleDateFormat("dd/MM", Locale.ENGLISH);
         this.mDate = new Date();
     }
 
@@ -55,7 +55,7 @@ public class HourAxisValueFormatter implements IAxisValueFormatter {
 
     private String getHour(long timestamp){
         try{
-            mDate.setTime(timestamp*1000);
+            mDate.setTime(timestamp);
             return mDataFormat.format(mDate);
         }
         catch(Exception ex){
