@@ -41,7 +41,7 @@ public class MyMarkerView extends MarkerView {
         this.graphWidth = graphWidth;
     }
 
-    // callbacks everytime the MarkerView is redrawn, can be used to update the
+    // callbacks every time the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
     public void refreshContent(Entry e, Highlight highlight) {

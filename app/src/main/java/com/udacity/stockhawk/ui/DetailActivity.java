@@ -81,7 +81,6 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         if (intentThatStartedActivity.hasExtra(getString(R.string.stock_intent_key))) {
             stockSymbol = intentThatStartedActivity.getStringExtra(getString(R.string.stock_intent_key));
             populateViews();
-            //extractData(stockSymbol, 1000);
         }
     }
 
@@ -157,10 +156,11 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         xAxis.setTextSize(12);
 
         xAxis.setLabelRotationAngle(60);
-        LineDataSet dataSet = new LineDataSet(entries, "Last 5 weeks for: " + symbol);
+        LineDataSet dataSet = new LineDataSet(entries, null);
         dataSet.setColor(Color.GRAY);
         dataSet.setDrawValues(false);
 
+        mLineChart.getLegend().setEnabled(false);
         mLineChart.getXAxis().setTextColor(Color.GRAY);
         mLineChart.getAxisLeft().setTextColor(Color.GRAY);
         mLineChart.getAxisRight().setTextColor(Color.GRAY);

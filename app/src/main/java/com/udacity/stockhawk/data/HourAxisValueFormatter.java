@@ -34,7 +34,7 @@ public class HourAxisValueFormatter implements IAxisValueFormatter {
      *
      * @param value the value to be formatted
      * @param axis  the axis the value belongs to
-     * @return
+     * @return String which is formatted date
      */
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
