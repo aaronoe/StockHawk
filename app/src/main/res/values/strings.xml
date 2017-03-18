@@ -50,4 +50,7 @@
     <string name="choice_one_year">1 Year</string>
     <string name="choice_two_years">2 Years</string>
 
+    <string name="error_historic_data">Historic data for %s could not be retrieved</string>
+    <string name="error_na_data">Data for %s does not exist</string>
+
 </resources>

@@ -28,21 +28,17 @@ public class MyMarkerView extends MarkerView {
     private DateFormat mDataFormat;
     private Date mDate;
     private long referenceTimestamp;
-    private Context mContext;
     private int graphWidth;
-    private int graphHeight;
 
     public MyMarkerView(Context context, int layoutResource,
-                        long referenceTime, int graphWidth, int graphHeight) {
+                        long referenceTime, int graphWidth) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(R.id.tvContent);
         this.mDataFormat = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
         this.mDate = new Date();
         this.referenceTimestamp = referenceTime;
-        this.mContext = context;
         this.graphWidth = graphWidth;
-        this.graphHeight = graphHeight;
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the

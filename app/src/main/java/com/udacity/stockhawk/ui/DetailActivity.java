@@ -172,7 +172,7 @@ public class DetailActivity extends AppCompatActivity implements AdapterView.OnI
         mLineChart.setExtraBottomOffset(5);
 
         MyMarkerView myMarkerView= new MyMarkerView(getApplicationContext(),
-                R.layout.custom_marker_view, referenceTimestamp, mLineChart.getWidth(), mLineChart.getHeight());
+                R.layout.custom_marker_view, referenceTimestamp, mLineChart.getWidth());
         mLineChart.setMarker(myMarkerView);
 
         mLineChart.setDescription(null);

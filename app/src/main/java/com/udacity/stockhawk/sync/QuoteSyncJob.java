@@ -8,10 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.widget.Toast;
 
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +41,7 @@ public final class QuoteSyncJob {
     private static final int PERIODIC_ID = 1;
     private static final int YEARS_OF_HISTORY = 2;
 
+
     private QuoteSyncJob() {
     }
 
@@ -47,6 +52,7 @@ public final class QuoteSyncJob {
         Calendar from = Calendar.getInstance();
         Calendar to = Calendar.getInstance();
         from.add(Calendar.YEAR, -YEARS_OF_HISTORY);
+
 
         try {
 
@@ -79,6 +85,7 @@ public final class QuoteSyncJob {
                 // if there is not, it does not exist
                 if (quote.getPrice() == null) {
                     PrefUtils.removeStock(context, symbol);
+                    sendToast(context, context.getString(R.string.error_na_data, symbol));
                     continue;
                 }
 
@@ -87,9 +94,18 @@ public final class QuoteSyncJob {
                 float change = quote.getChange().floatValue();
                 float percentChange = quote.getChangeInPercent().floatValue();
 
+
                 // WARNING! Don't request historical data for a stock that doesn't exist!
                 // The request will hang forever X_x
-                List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
+                // Catch FileNotFoundExceptions if history is not available and continue to next stock
+                List<HistoricalQuote> history;
+                try {
+                    history = stock.getHistory(from, to, Interval.WEEKLY);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    sendToast(context, context.getString(R.string.error_historic_data, symbol));
+                    continue;
+                }
 
                 StringBuilder historyBuilder = new StringBuilder();
 
@@ -174,6 +190,17 @@ public final class QuoteSyncJob {
 
 
         }
+    }
+
+    private static void sendToast(Context context, final String message) {
+        final Context finalContext = context;
+        Handler h = new Handler(finalContext.getMainLooper());
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(finalContext, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
