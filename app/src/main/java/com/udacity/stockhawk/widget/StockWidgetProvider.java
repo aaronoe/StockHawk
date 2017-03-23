@@ -3,14 +3,18 @@ package com.udacity.stockhawk.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.StockWidgetRemoteViewsService;
 import com.udacity.stockhawk.ui.DetailActivity;
 import com.udacity.stockhawk.ui.MainActivity;
+
+import timber.log.Timber;
 
 /**
  *
@@ -40,8 +44,22 @@ public class StockWidgetProvider extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widget_list, startActivityPendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
+
         }
 
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        Timber.d("Intent received");
+
+        if (PrefUtils.WIDGET_UPDATE.equals(intent.getAction())) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
+        }
     }
 
     @Override
