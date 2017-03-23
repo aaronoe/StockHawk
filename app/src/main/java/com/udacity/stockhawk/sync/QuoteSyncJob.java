@@ -79,11 +79,17 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
+                if (stock == null) {
+                    PrefUtils.removeStock(context, symbol);
+                    sendToast(context, context.getString(R.string.error_na_data, symbol));
+                    continue;
+                }
+
                 StockQuote quote = stock.getQuote();
 
                 // Check if there is data for this stock,
                 // if there is not, it does not exist
-                if (quote.getPrice() == null) {
+                if (quote == null || quote.getPrice() == null) {
                     PrefUtils.removeStock(context, symbol);
                     sendToast(context, context.getString(R.string.error_na_data, symbol));
                     continue;

@@ -40,6 +40,7 @@ public class StockWidgetProvider extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widget_list, startActivityPendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
+
         }
 
     }

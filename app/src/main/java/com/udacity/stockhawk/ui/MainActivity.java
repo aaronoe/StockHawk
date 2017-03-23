@@ -24,6 +24,7 @@ import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
+import com.udacity.stockhawk.widget.StockWidgetProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

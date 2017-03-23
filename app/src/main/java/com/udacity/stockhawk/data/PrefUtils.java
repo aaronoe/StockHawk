@@ -1,14 +1,21 @@
 package com.udacity.stockhawk.data;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.widget.StockWidgetProvider;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import timber.log.Timber;
 
 public final class PrefUtils {
 
@@ -51,6 +58,9 @@ public final class PrefUtils {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(key, stocks);
         editor.apply();
+
+        Timber.d("Updating Widget");
+        updateWidget(context);
     }
 
     public static void addStock(Context context, String symbol) {
@@ -59,6 +69,10 @@ public final class PrefUtils {
 
     public static void removeStock(Context context, String symbol) {
         editStockPref(context, symbol, false);
+
+        // Delete entry
+        Uri queryUri = Uri.withAppendedPath(Contract.Quote.URI, symbol);
+        context.getContentResolver().delete(queryUri, null, null);
     }
 
     public static String getDisplayMode(Context context) {
@@ -86,6 +100,18 @@ public final class PrefUtils {
         }
 
         editor.apply();
+    }
+
+    public static void updateWidget(Context context) {
+        Intent intent = new Intent(context, StockWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+        // since it seems the onUpdate() is only fired on that:
+
+        int[] ids = AppWidgetManager.getInstance(context.getApplicationContext()).getAppWidgetIds(new ComponentName(context.getApplicationContext(), StockWidgetProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+
+        context.sendBroadcast(intent);
     }
 
 }
