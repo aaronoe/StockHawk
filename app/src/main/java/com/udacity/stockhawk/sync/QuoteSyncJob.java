@@ -198,7 +198,7 @@ public final class QuoteSyncJob {
         }
     }
 
-    private static void sendToast(Context context, final String message) {
+    public static void sendToast(Context context, final String message) {
         final Context finalContext = context;
         Handler h = new Handler(finalContext.getMainLooper());
         h.post(new Runnable() {

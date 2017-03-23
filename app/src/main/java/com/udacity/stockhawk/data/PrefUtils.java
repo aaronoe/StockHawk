@@ -1,7 +1,5 @@
 package com.udacity.stockhawk.data;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,15 +7,19 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.udacity.stockhawk.R;
-import com.udacity.stockhawk.widget.StockWidgetProvider;
+import com.udacity.stockhawk.sync.QuoteSyncJob;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
 public final class PrefUtils {
+
+    public static final String WIDGET_UPDATE = "com.udacity.stockhawk.app.ACTION_DATA_UPDATED";
 
     private PrefUtils() {
     }
@@ -64,6 +66,15 @@ public final class PrefUtils {
     }
 
     public static void addStock(Context context, String symbol) {
+        // Check if it's a valid Stock-Symbol
+        Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(symbol);
+        if (matcher.find()) {
+            Timber.d("Symbol contains invalid characters");
+            QuoteSyncJob.sendToast(context, context.getString(R.string.invalid_symbols, symbol));
+            return;
+        }
+
         editStockPref(context, symbol, true);
     }
 
@@ -102,16 +113,13 @@ public final class PrefUtils {
         editor.apply();
     }
 
-    public static void updateWidget(Context context) {
-        Intent intent = new Intent(context, StockWidgetProvider.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-        // since it seems the onUpdate() is only fired on that:
 
-        int[] ids = AppWidgetManager.getInstance(context.getApplicationContext()).getAppWidgetIds(new ComponentName(context.getApplicationContext(), StockWidgetProvider.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+    private static void updateWidget(Context context) {
 
-        context.sendBroadcast(intent);
+        Intent dataUpdatedIntent =
+                new Intent(WIDGET_UPDATE).setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+
     }
 
 }

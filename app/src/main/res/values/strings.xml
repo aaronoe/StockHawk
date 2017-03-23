@@ -55,5 +55,6 @@
 
     <string name="error_historic_data">Historic data for %s could not be retrieved</string>
     <string name="error_na_data">Data for %s does not exist</string>
+    <string name="invalid_symbols">Symbol %s contains invalid characters</string>
 
 </resources>
